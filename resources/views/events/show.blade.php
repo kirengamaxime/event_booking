@@ -1,287 +1,326 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Event Details</title>
+    <title>{{ $event->title }}</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            min-height: 100vh;
-            color: #fff;
-        }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-
-        .section-title {
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .info-label {
-            font-weight: 600;
-            color: #cfd8dc;
-        }
-
-        .attendee-item {
-            background: rgba(255,255,255,0.1);
-            padding: 10px 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .btn-custom {
-            border-radius: 10px;
-        }
-
-        .progress {
-            height: 10px;
-            border-radius: 10px;
-        }
-
-        input {
-            border-radius: 10px !important;
-            border: none !important;
-            padding: 12px;
-        }
-        .ticket-card {
-    display: block;
-    cursor: pointer;
+body {
+    background: #0f172a;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-.ticket-card input {
-    display: none;
+/* HERO */
+.hero {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
 }
 
-.ticket-content {
-    background: rgba(255,255,255,0.08);
+/* BACKGROUND IMAGE */
+.hero-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.5);
+}
+
+/* DARK GRADIENT */
+.hero-bg::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(15,23,42,1), transparent);
+}
+
+/* TEXT */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 60px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.hero p {
+    opacity: 0.85;
+    font-size: 16px;
+}
+
+/* MAIN CARD */
+.card-modern {
+    background: #1e293b;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+/* INFO GRID */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.info-box {
+    background: #0f172a;
     padding: 15px;
     border-radius: 12px;
     text-align: center;
-    transition: 0.3s;
-    border: 2px solid transparent;
 }
 
-.ticket-content h6 {
-    margin: 0;
-    font-weight: bold;
+.info-box small {
+    color: #94a3b8;
 }
 
-.ticket-content .price {
-    margin: 5px 0 0;
-    font-size: 14px;
-    color: #ccc;
+/* PROGRESS */
+.progress {
+    height: 12px;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-/* HOVER */
-.ticket-card:hover .ticket-content {
-    transform: translateY(-3px);
-    background: rgba(255,255,255,0.15);
+.progress-bar {
+    background: linear-gradient(90deg, #22c55e, #4ade80);
 }
 
-/* SELECTED */
-.ticket-card input:checked + .ticket-content {
-    border: 2px solid #28a745;
-    background: rgba(40,167,69,0.2);
+/* BOOKING CARD */
+.booking-card {
+    background: #111827;
+    border-radius: 20px;
+    padding: 25px;
 }
 
-/* VIP STYLE */
-.ticket-card.vip input:checked + .ticket-content {
-    border: 2px solid gold;
-    background: rgba(255,215,0,0.2);
+/* INPUTS */
+input {
+    background: #1e293b !important;
+    border: none !important;
+    color: white !important;
 }
 
-.btn-book {
-    width: 100%;
-    padding: 14px;
-    border: none;
+input::placeholder {
+    color: #94a3b8;
+}
+
+/* TICKETS */
+.ticket {
+    padding: 15px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #28a745, #20c997);
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
+    background: #1e293b;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.3s;
 }
 
-/* Hover effect */
+.ticket:hover {
+    transform: translateY(-4px);
+}
+
+.ticket input {
+    display: none;
+}
+
+.ticket.active {
+    border: 2px solid #22c55e;
+    background: rgba(34,197,94,0.2);
+}
+
+/* BUTTON */
+.btn-book {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    width: 100%;
+    transition: 0.3s;
+}
+
 .btn-book:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(40,167,69,0.4);
+    box-shadow: 0 10px 25px rgba(59,130,246,0.5);
 }
 
-/* Click effect */
-.btn-book:active {
-    transform: scale(0.98);
+/* ATTENDEES */
+.attendee {
+    background: #1e293b;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
+
     </style>
 </head>
 
 <body>
 
-<div class="container py-5">
+<!-- HERO -->
+@php
+    $title = strtolower($event->title);
 
-    <!-- ALERTS -->
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    if ($event->image) {
+        $image = asset('storage/'.$event->image);
+    } elseif (str_contains($title, 'volleyball')) {
+        $image = asset('images/v.png');
+    } elseif (str_contains($title, 'yoga')) {
+        $image = asset('images/y.png');
+    } elseif (str_contains($title, 'tech')) {
+        $image = asset('images/t.png');
+    } else {
+        $image = asset('images/default.png');
+    }
+@endphp
 
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
+<div class="hero">
 
-    <!-- EVENT CARD -->
-    <div class="glass-card mb-4">
+    <div class="hero-bg" style="background-image: url('{{ $image }}');"></div>
 
-        <h2 class="mb-4">{{ $event->title }}</h2>
-
-        <p><span class="info-label">📅 Date:</span> {{ $event->date }}</p>
-        <p><span class="info-label">📍 Location:</span> {{ $event->location }}</p>
-        <p><span class="info-label">📝 Description:</span> {{ $event->description }}</p>
-
-        <hr>
-
-        @php
-            $current = $event->bookings->count();
-            $max = $event->max_attendees;
-            $remaining = $max - $current;
-            $percentage = ($max > 0) ? ($current / $max) * 100 : 0;
-        @endphp
-
-        <p><span class="info-label">👥 Max Attendees:</span> {{ $max }}</p>
-        <p><span class="info-label">✅ Current Attendees:</span> {{ $current }}</p>
-        <p><span class="info-label">🪑 Remaining Seats:</span> {{ $remaining }}</p>
-
-        <!-- PROGRESS BAR -->
-        <div class="progress mt-3">
-            <div class="progress-bar bg-success" style="width: {{ $percentage }}%"></div>
-        </div>
-
+    <div class="hero-content">
+        <h1>{{ $event->title }}</h1>
+        <p>{{ $event->location }} • {{ $event->date }}</p>
     </div>
 
-    <!-- BOOKING SECTION -->
-   <div class="glass-card mb-4">
+</div>
 
-    <h4 class="section-title">🎟 Book this Event</h4>
+<div class="container mt-5">
 
-    @if($remaining > 0)
+    @php
+        $current = $event->bookings->count();
+        $max = $event->max_attendees;
+        $remaining = $max - $current;
+        $percentage = ($max > 0) ? ($current / $max) * 100 : 0;
+    @endphp
 
-        <form action="{{ route('bookings.store') }}" method="POST">
-            @csrf
+    <div class="row g-4">
 
-            <!-- EVENT ID -->
-            <input type="hidden" name="event_id" value="{{ $event->id }}">
+        <!-- LEFT -->
+        <div class="col-md-8">
 
-            <!-- NAME -->
-            <input 
-                type="text" 
-                name="name" 
-                placeholder="Your Name" 
-                class="form-control mb-3"
-                required
-            >
+            <div class="card-modern mb-4">
 
-            <!-- EMAIL -->
-            <input 
-                type="email" 
-                name="email" 
-                placeholder="Your Email" 
-                class="form-control mb-3"
-                required
-            >
+                <h4>Description</h4>
+                <p style="color:#cbd5f5">{{ $event->description }}</p>
 
-            <!-- 🎟 TICKET TYPE -->
-            <div class="mb-4">
-                <label class="form-label fw-bold text-white mb-3">
-                    🎟 Choose Ticket Type
-                </label>
+                <hr>
 
-                <div class="d-flex gap-3">
+                <div class="info-grid">
 
-                    <label class="ticket-card w-100">
-                        <input type="radio" name="ticket_type" value="normal" required>
-                        <div class="ticket-content">
-                            <h6>Regular</h6>
-                            <p class="price">5,000 RWF</p>
-                        </div>
-                    </label>
+                    <div class="info-box">
+                        <h5>{{ $max }}</h5>
+                        <small>Max</small>
+                    </div>
 
-                    <label class="ticket-card w-100 vip">
-                        <input type="radio" name="ticket_type" value="vip">
-                        <div class="ticket-content">
-                            <h6>VIP</h6>
-                            <p class="price">15,000 RWF</p>
-                        </div>
-                    </label>
+                    <div class="info-box">
+                        <h5>{{ $current }}</h5>
+                        <small>Booked</small>
+                    </div>
+
+                    <div class="info-box">
+                        <h5>{{ $remaining }}</h5>
+                        <small>Remaining</small>
+                    </div>
 
                 </div>
+
+                <div class="mt-4">
+                    <div class="progress">
+                        <div class="progress-bar" style="width: {{ $percentage }}%"></div>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- BUTTON -->
-            <button type="submit" class="btn-book">
-                🎟 Book Now
-            </button>
+            <!-- ATTENDEES -->
+            @auth
+            @if(auth()->user()->role === 'admin')
+            <div class="card-modern">
 
-        </form>
+                <h4>Attendees</h4>
 
-    @else
-        <div class="alert alert-warning">
-            🚫 Event is fully booked!
+                @foreach($event->bookings as $a)
+                    <div class="attendee">
+                        {{ $a->name }}
+                    </div>
+                @endforeach
+
+            </div>
+            @endif
+            @endauth
+
         </div>
-    @endif
 
-</div>
+        <!-- RIGHT -->
+        <div class="col-md-4">
 
-    
-   @auth
-@if(auth()->user()->role === 'admin')
+            <div class="booking-card">
 
-<div class="glass-card mb-4">
+                <h4 class="mb-3">🎟 Book Ticket</h4>
 
-    <h4 class="section-title">👥 Attendees</h4>
+                @if($remaining > 0)
 
-    @if($event->bookings && $event->bookings->count() > 0)
-        @foreach($event->bookings as $attendee)
-            <div class="attendee-item">
-                {{ $attendee->name }}
+                <form method="POST" action="{{ route('bookings.store') }}">
+                    @csrf
+
+                    <input type="hidden" name="event_id" value="{{ $event->id }}">
+
+                    <input type="text" name="name" placeholder="Your Name" class="form-control mb-3" required>
+
+                    <input type="email" name="email" placeholder="Email Address" class="form-control mb-3" required>
+
+                    <div class="d-flex gap-2 mb-3">
+
+                        <label class="ticket w-100">
+                            <input type="radio" name="ticket_type" value="regular" required>
+                            Regular <br><small>5,000 RWF</small>
+                        </label>
+
+                        <label class="ticket w-100">
+                            <input type="radio" name="ticket_type" value="vip">
+                            VIP <br><small>15,000 RWF</small>
+                        </label>
+
+                    </div>
+
+                    <button class="btn-book">Book Now</button>
+
+                </form>
+
+                @else
+                    <div class="alert alert-warning">
+                        Fully booked 🚫
+                    </div>
+                @endif
+
             </div>
-        @endforeach
-    @else
-        <p>No attendees yet 😢</p>
-    @endif
 
-</div>
+        </div>
 
-@endif
-@endauth
     </div>
 
-    <!-- BACK BUTTON -->
-    <a href="{{ route('events.index') }}" class="btn btn-light btn-custom">
-        ← Back to Events
+    <!-- BACK -->
+    <a href="{{ route('events.index') }}" class="btn btn-light mt-4">
+        ← Back
     </a>
 
 </div>
 
-<!-- JS FOR BUTTON ENABLE -->
 <script>
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const btn = document.getElementById('bookBtn');
-
-    function checkInputs() {
-        btn.disabled = !(nameInput.value.trim() && emailInput.value.trim());
-    }
-
-    nameInput.addEventListener('input', checkInputs);
-    emailInput.addEventListener('input', checkInputs);
+document.querySelectorAll('.ticket').forEach(card => {
+    card.addEventListener('click', () => {
+        document.querySelectorAll('.ticket').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+    });
+});
 </script>
 
 </body>

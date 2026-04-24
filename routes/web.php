@@ -7,6 +7,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AdminController;
 
+
 Route::get('/admin/bookings', [AdminController::class, 'index'])
     ->middleware('auth')
     ->name('admin.bookings');
