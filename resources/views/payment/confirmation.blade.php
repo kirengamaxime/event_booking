@@ -7,43 +7,41 @@
 
     <style>
         body {
-            background: #f4f6f9;
+            background: #0f172a;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .receipt {
             width: 420px;
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
             overflow: hidden;
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.4s ease;
         }
 
         @keyframes fadeIn {
-            from {opacity: 0; transform: translateY(15px);}
+            from {opacity: 0; transform: translateY(20px);}
             to {opacity: 1; transform: translateY(0);}
         }
 
+        /* HEADER */
         .receipt-header {
-            background: linear-gradient(135deg, #28a745, #20c997);
+            background: linear-gradient(135deg, #22c55e, #4ade80);
             color: white;
             text-align: center;
             padding: 25px;
         }
 
-        .receipt-header h4 {
-            margin: 10px 0 0;
-            font-weight: bold;
-        }
-
         .success-icon {
-            font-size: 50px;
+            font-size: 40px;
         }
 
+        /* BODY */
         .receipt-body {
             padding: 25px;
         }
@@ -67,9 +65,10 @@
         .amount {
             font-size: 18px;
             font-weight: bold;
-            color: #28a745;
+            color: #22c55e;
         }
 
+        /* BADGES */
         .badge-ticket {
             padding: 5px 10px;
             border-radius: 8px;
@@ -86,16 +85,63 @@
             color: white;
         }
 
+        /* QR */
+        .qr-box {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .qr-box div {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .qr-box small {
+            display: block;
+            margin-top: 8px;
+            color: #666;
+        }
+
+        /* FOOTER */
         .receipt-footer {
             text-align: center;
             padding: 20px;
         }
 
+        /* DOWNLOAD BUTTON */
+        .btn-download {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(34,197,94,0.4);
+        }
+
+        /* BACK BUTTON */
         .btn-home {
-            background: #2a5298;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
             color: white;
             border-radius: 10px;
-            padding: 10px 20px;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-home:hover {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
         }
 
     </style>
@@ -126,6 +172,11 @@
         </div>
 
         <div class="row-item">
+            <strong>Event</strong>
+            <span>{{ $booking->event->title }}</span>
+        </div>
+
+        <div class="row-item">
             <strong>Ticket</strong>
             <span>
                 <span class="badge-ticket {{ $booking->ticket_type == 'vip' ? 'vip' : 'normal' }}">
@@ -141,7 +192,6 @@
 
         <div class="divider"></div>
 
-        <!-- AMOUNT -->
         <div class="row-item">
             <strong>Total Paid</strong>
             <span class="amount">
@@ -151,10 +201,9 @@
 
         <div class="divider"></div>
 
-        <!-- FAKE TRANSACTION INFO -->
         <div class="row-item">
             <strong>Reference</strong>
-            <span>EVT-{{ rand(100000,999999) }}</span>
+            <span>EVT-{{ $booking->id }}{{ rand(100,999) }}</span>
         </div>
 
         <div class="row-item">
@@ -162,13 +211,33 @@
             <span>{{ now()->format('d M Y, H:i') }}</span>
         </div>
 
+        <!-- QR -->
+        <div class="qr-box">
+            <div>
+                {!! QrCode::size(140)->generate(
+                    'Name: '.$booking->name.
+                    ' | Event: '.$booking->event->title.
+                    ' | Ticket: '.strtoupper($booking->ticket_type)
+                ) !!}
+            </div>
+            <small>Scan at event entrance</small>
+        </div>
+
     </div>
 
     <!-- FOOTER -->
     <div class="receipt-footer">
-        <a href="{{ route('events.index') }}" class="btn btn-home">
-            Back to Events
+
+        <!-- DOWNLOAD BUTTON -->
+        <a href="{{ route('receipt.download', $booking->id) }}" class="btn-download">
+            ⬇ Download Receipt (PDF)
         </a>
+
+        <!-- BACK -->
+        <a href="{{ route('events.index') }}" class="btn-home">
+            ← Back to Events
+        </a>
+
     </div>
 
 </div>

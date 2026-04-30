@@ -6,78 +6,167 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        body {
-            background: linear-gradient(135deg, #004080, #007bff);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #0f172a;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
 
-        .card-box {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            width: 400px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
+/* CARD */
+.payment-card {
+    width: 100%;
+    max-width: 400px;
+    background: #111827;
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
 
-        .logo {
-            width: 120px;
-            margin-bottom: 20px;
-        }
+/* LOGO BOX */
+.logo-box {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 10px;
+    background: #1f2937;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .btn-pay {
-            background: #004080;
-            color: white;
-            border-radius: 10px;
-            padding: 12px;
-            width: 100%;
-            border: none;
-        }
+.logo {
+    max-width: 45px;
+    max-height: 45px;
+    object-fit: contain;
+}
 
-        .btn-pay:hover {
-            background: #002f5b;
-        }
+/* TEXT */
+.title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: #9ca3af;
+    margin-bottom: 20px;
+}
+
+/* BOOKING */
+.booking-box {
+    background: #1f2937;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* INPUT */
+.form-label {
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+input {
+    background: #1f2937 !important;
+    border: none !important;
+    border-radius: 10px !important;
+    color: white !important;
+}
+
+input::placeholder {
+    color: #6b7280;
+}
+
+/* 🔵 Bank accent */
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #3b82f6;
+}
+
+/* BUTTON */
+.btn-pay {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #3b82f6;
+    color: white;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-pay:hover {
+    background: #2563eb;
+}
+
+/* FOOTER */
+.footer-text {
+    font-size: 12px;
+    color: #6b7280;
+    text-align: center;
+    margin-top: 15px;
+}
     </style>
 </head>
 
 <body>
 
-<div class="card-box">
+<div class="payment-card text-center">
 
-    <!-- YOUR LOGO -->
-    <img src="/images/bk.png" class="logo" alt="Bank of Kigali">
+    <!-- LOGO -->
+    <div class="logo-box">
+        <img src="/images/bk.png" class="logo" alt="Bank of Kigali">
+    </div>
 
-    <h4>Bank Payment</h4>
+    <div class="title">Bank Payment</div>
+    <div class="subtitle">Secure bank transfer</div>
 
-    <p><strong>Name:</strong> {{ $booking->name }}</p>
-<form method="POST" action="{{ route('payment.confirm', $booking->id) }}">
-    @csrf
+    <!-- BOOKING -->
+    <div class="booking-box">
+        Booking for <strong>{{ $booking->name }}</strong>
+    </div>
 
-    <input 
-        type="text" 
-        name="account_number"
-        class="form-control mb-3" 
-        placeholder="Enter Account Number"
-        pattern="[0-9]{10,16}"
-        title="Account number must be 10 to 16 digits"
-        required
-    >
+    <!-- FORM -->
+    <form method="POST" action="{{ route('payment.confirm', $booking->id) }}">
+        @csrf
 
-    <input 
-        type="text" 
-        name="account_name"
-        class="form-control mb-3" 
-        placeholder="Account Name"
-        required
-    >
+        <div class="mb-3 text-start">
+            <label class="form-label">Account Number</label>
+            <input 
+                type="text" 
+                name="account_number"
+                class="form-control"
+                placeholder="Enter account number"
+                pattern="[0-9]{10,16}"
+                required
+            >
+        </div>
 
-    <button type="submit" class="btn-pay">
-        Pay via Bank
-    </button>
-</form>
+        <div class="mb-3 text-start">
+            <label class="form-label">Account Name</label>
+            <input 
+                type="text" 
+                name="account_name"
+                class="form-control"
+                placeholder="Account holder name"
+                required
+            >
+        </div>
+
+        <button class="btn-pay">
+            Pay via Bank
+        </button>
+    </form>
+
+    <div class="footer-text">
+        Powered by Bank Transfer
+    </div>
 
 </div>
 

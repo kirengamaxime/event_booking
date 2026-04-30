@@ -14,10 +14,15 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
-    {
-        return view('auth.login');
+  public function create(): View|\Illuminate\Http\RedirectResponse
+{
+    // 🔥 If already logged in, send to events (NOT profile)
+    if (Auth::check()) {
+        return redirect()->route('events.index');
     }
+
+    return view('auth.login');
+}
 
     /**
      * Handle an incoming authentication request.
@@ -28,20 +33,19 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-     return redirect()->intended(route('events.index', absolute: false));
+return redirect()->route('events.index');
     }
 
     /**
      * Destroy an authenticated session.
      */
     public function destroy(Request $request): RedirectResponse
-    {
-        Auth::guard('web')->logout();
+{
+    Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-        $request->session()->regenerateToken();
-
-        return redirect('/');
-    }
+    return redirect()->route('login'); // 🔥 NOT '/'
+}
 }

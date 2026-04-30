@@ -6,11 +6,72 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-
 body {
+    margin: 0;
     background: linear-gradient(135deg, #0f172a, #020617);
     color: white;
     font-family: 'Segoe UI', sans-serif;
+}
+
+/* LAYOUT */
+.app-layout {
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background: #020617;
+    padding: 20px;
+    border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.logo {
+    color: white;
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* MENU */
+.menu-item {
+    display: block;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #cbd5f5;
+    transition: 0.3s;
+}
+
+.menu-item:hover {
+    background: rgba(59,130,246,0.2);
+    color: white;
+}
+
+.menu-item.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* LOGOUT */
+.logout-btn {
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: transparent;
+    color: #f87171;
+}
+
+.logout-btn:hover {
+    background: rgba(248,113,113,0.2);
+}
+
+/* MAIN */
+.main-content {
+    flex: 1;
+    padding: 40px;
 }
 
 /* HEADER */
@@ -35,39 +96,20 @@ body {
     box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
 
-/* IMAGE */
-.event-image {
-    position: relative;
-    overflow: hidden;
-}
-
 .event-image img {
     width: 100%;
     height: 220px;
     object-fit: cover;
-    transition: 0.4s;
 }
 
-.event-card:hover img {
-    transform: scale(1.1);
-}
-
-/* OVERLAY */
 .overlay {
     position: absolute;
     bottom: 0;
-    left: 0;
     width: 100%;
     padding: 15px;
     background: linear-gradient(transparent, rgba(0,0,0,0.9));
 }
 
-.overlay-title {
-    font-weight: bold;
-    font-size: 16px;
-}
-
-/* CONTENT */
 .event-content {
     padding: 20px;
 }
@@ -75,10 +117,8 @@ body {
 .event-meta {
     font-size: 14px;
     opacity: 0.7;
-    margin-bottom: 6px;
 }
 
-/* FOOTER */
 .event-footer {
     margin-top: 15px;
     display: flex;
@@ -86,7 +126,6 @@ body {
     align-items: center;
 }
 
-/* BADGE */
 .badge-available {
     background: rgba(34,197,94,0.2);
     color: #22c55e;
@@ -95,134 +134,190 @@ body {
     font-size: 12px;
 }
 
-/* BUTTON */
 .btn-view {
     background: linear-gradient(135deg, #2563eb, #1d4ed8);
     padding: 6px 14px;
     border-radius: 8px;
     color: white;
     text-decoration: none;
-    transition: 0.3s;
 }
 
-.btn-view:hover {
-    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+.btn-warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border: none;
+    color: white;
 }
 
-/* EMPTY */
-.empty {
-    text-align: center;
-    opacity: 0.7;
-    margin-top: 80px;
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border: none;
 }
-
     </style>
 </head>
 
 <body>
 
-<div class="container py-5">
+<div class="app-layout">
 
-    <!-- HEADER -->
-    <div class="header">
-        <h2 class="fw-bold">🎟 Explore Events</h2>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
 
-        <div class="d-flex gap-2">
-            @auth
-                @if(auth()->user()->role === 'admin')
+        <div class="logo">🎟 Events</div>
 
-                    <a href="{{ route('admin.bookings') }}" class="btn btn-success">
-                        📊 Dashboard
-                    </a>
+        <!-- FIXED LINKS -->
+        <a href="{{ route('events.index') }}" 
+           class="menu-item {{ request()->routeIs('events.index') ? 'active' : '' }}">
+            🏠 Explore Events
+        </a>
 
-                    <a href="{{ route('events.create') }}" class="btn btn-primary">
-                        + Create Event
-                    </a>
+        <a href="{{ route('bookings.my') }}" 
+           class="menu-item {{ request()->routeIs('bookings.my') ? 'active' : '' }}">
+            🎟 My Bookings
+        </a>
 
-                @endif
-            @endauth
+        <!-- 👉 You can later connect this -->
+        <a href="#" class="menu-item">
+            💳 Payments
+        </a>
+
+        <!-- ✅ FIXED PROFILE LINK -->
+        <a href="{{ route('profile.edit') }}" 
+           class="menu-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+            👤 Profile
+        </a>
+
+        @auth
+        <div style="margin-top:20px; font-size:13px; color:#9ca3af;">
+            Logged in as <br>
+            <strong>{{ auth()->user()->name }}</strong>
         </div>
+
+        <!-- LOGOUT -->
+        <form method="POST" action="{{ route('logout') }}" style="margin-top:20px;">
+            @csrf
+            <button class="menu-item logout-btn">🚪 Logout</button>
+        </form>
+        @endauth
+
     </div>
 
-    <!-- SUCCESS -->
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h2 class="fw-bold">🎟 Explore Events</h2>
+
+            <div class="d-flex gap-2">
+                @auth
+                    @if(auth()->user()->role === 'admin')
+
+                        <a href="{{ route('admin.bookings') }}" class="btn btn-success">
+                            📊 Dashboard
+                        </a>
+
+                        <a href="{{ route('events.create') }}" class="btn btn-primary">
+                            + Create Event
+                        </a>
+
+                    @endif
+                @endauth
+            </div>
         </div>
-    @endif
 
-    <!-- EVENTS -->
-    @if(isset($events) && count($events) > 0)
+        <!-- SUCCESS -->
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-        <div class="row g-4">
+@if(isset($events) && count($events) > 0)
+<div class="row g-4">
 
-            @foreach($events as $event)
-                <div class="col-lg-4 col-md-6">
+@foreach($events as $event)
+<div class="col-lg-4 col-md-6">
+<div class="event-card">
+        <!-- EVENTS -->
+       @php
+    $image = $event->image 
+        ? asset('storage/' . $event->image) 
+        : asset('images/default.png');
+@endphp
 
-                    <div class="event-card">
 
-                        @php
-                            $title = strtolower($event->title);
+                            <div class="event-image position-relative">
+                                <img src="{{ $image }}">
 
-                            if (str_contains($title, 'volleyball')) {
-                                $image = asset('images/v.png');
-                            } elseif (str_contains($title, 'yoga')) {
-                                $image = asset('images/y.png');
-                            } elseif (str_contains($title, 'tech')) {
-                                $image = asset('images/t.png');
-                            } else {
-                                $image = asset('images/default.png');
-                            }
-                        @endphp
-
-                        <!-- IMAGE -->
-                        <div class="event-image">
-                            <img src="{{ $image }}">
-
-                            <!-- OVERLAY TEXT -->
-                            <div class="overlay">
-                                <div class="overlay-title">
-                                    {{ $event->title }}
+                                <div class="overlay">
+                                    <strong>{{ $event->title }}</strong>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- CONTENT -->
-                        <div class="event-content">
+                            <div class="event-content">
 
-                            <div class="event-meta">
-                                📅 {{ $event->date }}
-                            </div>
+                                <div class="event-meta">
+                                    📅 {{ $event->date }}
+                                </div>
 
-                            <div class="event-meta">
-                                📍 {{ $event->location }}
-                            </div>
+                                <div class="event-meta">
+                                    📍 {{ $event->location }}
+                                </div>
 
-                            <div class="event-footer">
-                                <span class="badge-available">Available</span>
+                                <div class="event-footer">
 
-                                <a href="{{ route('events.show', $event->id) }}" class="btn-view">
-                                    View →
-                                </a>
+                                    <span class="badge-available">Available</span>
+
+                                    <div class="d-flex gap-2">
+
+                                        <a href="{{ route('events.show', $event->id) }}" class="btn-view">
+                                            View →
+                                        </a>
+
+                                        @auth
+                                            @if(auth()->user()->role === 'admin')
+
+                                                <a href="{{ route('events.edit', $event->id) }}" 
+                                                   class="btn btn-warning btn-sm">
+                                                    ✏
+                                                </a>
+
+                                                <form action="{{ route('events.destroy', $event->id) }}" 
+                                                      method="POST"
+                                                      onsubmit="return confirm('Delete this event?')">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button class="btn btn-danger btn-sm">
+                                                        🗑
+                                                    </button>
+                                                </form>
+
+                                            @endif
+                                        @endauth
+
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </div>
 
                     </div>
+                @endforeach
 
-                </div>
-            @endforeach
+            </div>
 
-        </div>
+        @else
 
-    @else
+            <div class="text-center mt-5">
+                <h4>No events yet 😢</h4>
+            </div>
 
-        <div class="empty">
-            <h4>No events yet 😢</h4>
-            <p>Create your first event to get started</p>
-        </div>
+        @endif
 
-    @endif
+    </div>
 
 </div>
 

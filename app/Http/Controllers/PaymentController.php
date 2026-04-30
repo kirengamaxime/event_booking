@@ -7,52 +7,38 @@ use App\Models\Booking;
 
 class PaymentController extends Controller
 {
-    // SHOW PAYMENT PAGE
+    // SHOW PAYMENT OPTIONS PAGE
     public function show($id)
     {
         $booking = Booking::with('event')->findOrFail($id);
 
-        return view('payment.show', [
-            'booking' => $booking,
-            'event' => $booking->event
-        ]);
+        return view('payment.show', compact('booking'));
     }
 
-
-    public function confirmation(Booking $booking)
-{
-    return view('payment.confirmation', compact('booking'));
-}
-
-public function confirm(Request $request, Booking $booking)
-{
-    // You can store fake payment info if you want later
-
-    return redirect()->route('payment.confirmation', $booking->id);
-}
     // HANDLE PAYMENT METHOD SELECTION
-   public function process(Request $request)
-{
-    $request->validate([
-        'payment_method' => 'required',
-        'booking_id' => 'required'
-    ]);
+    public function process(Request $request)
+    {
+        $request->validate([
+            'payment_method' => 'required',
+            'booking_id' => 'required'
+        ]);
 
-    if ($request->payment_method === 'mtn') {
-        return redirect()->route('payment.mtn', $request->booking_id);
+        // Redirect based on selected method
+        if ($request->payment_method === 'mtn') {
+            return redirect()->route('payment.mtn', $request->booking_id);
+        }
+
+        if ($request->payment_method === 'airtel') {
+            return redirect()->route('payment.airtel', $request->booking_id);
+        }
+
+        if ($request->payment_method === 'bank') {
+            return redirect()->route('payment.bank', $request->booking_id);
+        }
+
+        return back()->with('error', 'Invalid payment method selected.');
     }
 
-    if ($request->payment_method === 'airtel') {
-        return redirect()->route('payment.airtel', $request->booking_id);
-    }
-
-    // ✅ ADD THIS BLOCK
-    if ($request->payment_method === 'bank') {
-        return redirect()->route('payment.bank', $request->booking_id);
-    }
-
-    return back()->with('error', 'Invalid payment method');
-}
     // MTN PAGE
     public function mtn(Booking $booking)
     {
@@ -65,8 +51,31 @@ public function confirm(Request $request, Booking $booking)
         return view('payment.airtel', compact('booking'));
     }
 
+    // BANK PAGE
     public function bank(Booking $booking)
-{
-    return view('payment.bank', compact('booking'));
-}
+    {
+        return view('payment.bank', compact('booking'));
+    }
+
+    // ✅ SIMULATED PAYMENT CONFIRMATION
+    public function confirm(Request $request, Booking $booking)
+    {
+        $request->validate([
+            'phone' => 'required'
+        ]);
+
+        // Save phone & mark as paid (simulation)
+        $booking->update([
+            'phone' => $request->phone,
+            'payment_status' => 'paid'
+        ]);
+
+        return redirect()->route('payment.confirmation', $booking->id);
+    }
+
+    // SUCCESS PAGE
+    public function confirmation(Booking $booking)
+    {
+        return view('payment.confirmation', compact('booking'));
+    }
 }

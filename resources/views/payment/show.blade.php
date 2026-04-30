@@ -12,83 +12,80 @@ body {
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* PAGE TITLE */
+/* TITLE */
 .page-title {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 700;
     margin-bottom: 30px;
 }
 
-/* LAYOUT */
+/* WRAPPER */
 .payment-wrapper {
     max-width: 1100px;
     margin: auto;
 }
 
-/* LEFT INFO CARD */
-.info-card {
-    background: #1e293b;
-    border-radius: 18px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.info-item {
-    margin-bottom: 10px;
-    color: #cbd5f5;
-}
-
-/* RIGHT PAYMENT CARD */
-.payment-card {
+/* CARDS */
+.info-card, .payment-card {
     background: #111827;
     border-radius: 18px;
     padding: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+/* INFO TEXT */
+.info-item {
+    margin-bottom: 12px;
+    color: #cbd5f5;
+    font-size: 14px;
 }
 
 /* PAYMENT OPTION */
 .payment-option {
     border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 15px;
     margin-bottom: 15px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.25s ease;
     display: flex;
     align-items: center;
     gap: 15px;
+    position: relative;
 }
 
 .payment-option:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px) scale(1.01);
     border-color: #3b82f6;
-    background: rgba(59,130,246,0.1);
+    background: rgba(59,130,246,0.12);
 }
 
-/* ACTIVE */
+/* ACTIVE OPTION */
 .payment-option.active {
     border: 2px solid #22c55e;
     background: rgba(34,197,94,0.15);
+    box-shadow: 0 0 15px rgba(34,197,94,0.3);
 }
 
-/* HIDE RADIO */
+/* RADIO HIDDEN */
 .payment-option input {
     display: none;
 }
 
 /* LOGO */
 .payment-option img {
-    width: 45px;
-    height: 45px;
+    width: 48px;
+    height: 48px;
     object-fit: contain;
 }
 
 /* TEXT */
 .payment-name {
     font-weight: 600;
+    font-size: 15px;
 }
 
-/* BUTTON */
+/* PAY BUTTON */
 .btn-pay {
     width: 100%;
     margin-top: 20px;
@@ -99,6 +96,7 @@ body {
     background: linear-gradient(135deg, #22c55e, #4ade80);
     color: #022c22;
     transition: 0.3s;
+    position: relative;
 }
 
 .btn-pay:hover {
@@ -106,9 +104,22 @@ body {
     box-shadow: 0 10px 25px rgba(34,197,94,0.4);
 }
 
-/* BACK BUTTON */
+/* LOADING STATE */
+.btn-pay.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.btn-pay.loading::after {
+    content: "Processing...";
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+/* BACK */
 .btn-back {
-    margin-top: 20px;
+    margin-top: 25px;
     display: inline-block;
     color: #94a3b8;
     text-decoration: none;
@@ -116,6 +127,13 @@ body {
 
 .btn-back:hover {
     color: white;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .page-title {
+        text-align: center;
+    }
 }
     </style>
 </head>
@@ -131,37 +149,24 @@ body {
 
     <div class="row g-4">
 
-        <!-- LEFT SIDE (USER INFO) -->
+        <!-- LEFT -->
         <div class="col-md-5">
-
             <div class="info-card">
-
                 <h5 class="mb-3">Booking Info</h5>
 
-                <div class="info-item">
-                    <strong>Name:</strong> {{ $booking->name }}
-                </div>
-
-                <div class="info-item">
-                    <strong>Email:</strong> {{ $booking->email }}
-                </div>
-
-                <div class="info-item">
-                    <strong>Ticket:</strong> {{ ucfirst($booking->ticket_type) }}
-                </div>
-
+                <div class="info-item"><strong>Name:</strong> {{ $booking->name }}</div>
+                <div class="info-item"><strong>Email:</strong> {{ $booking->email }}</div>
+                <div class="info-item"><strong>Ticket:</strong> {{ ucfirst($booking->ticket_type) }}</div>
             </div>
-
         </div>
 
-        <!-- RIGHT SIDE (PAYMENT) -->
+        <!-- RIGHT -->
         <div class="col-md-7">
-
             <div class="payment-card">
 
                 <h5 class="mb-4">Choose Payment Method</h5>
 
-                <form method="POST" action="{{ route('payment.process') }}">
+                <form method="POST" action="{{ route('payment.process') }}" id="paymentForm">
                     @csrf
                     <input type="hidden" name="booking_id" value="{{ $booking->id }}">
 
@@ -186,14 +191,13 @@ body {
                         <div class="payment-name">Bank of Kigali</div>
                     </label>
 
-                    <button type="submit" class="btn-pay">
+                    <button type="submit" class="btn-pay" id="payBtn">
                         Pay Now →
                     </button>
 
                 </form>
 
             </div>
-
         </div>
 
     </div>
@@ -206,12 +210,20 @@ body {
 </div>
 
 <script>
-/* highlight selected option */
+// highlight selected option
 document.querySelectorAll('.payment-option').forEach(option => {
     option.addEventListener('click', () => {
         document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
         option.classList.add('active');
+        option.querySelector('input').checked = true;
     });
+});
+
+// loading state
+document.getElementById('paymentForm').addEventListener('submit', function() {
+    const btn = document.getElementById('payBtn');
+    btn.classList.add('loading');
+    btn.innerHTML = "Processing...";
 });
 </script>
 

@@ -268,7 +268,7 @@ input::placeholder {
 
                 @if($remaining > 0)
 
-                <form method="POST" action="{{ route('bookings.store') }}">
+              <form method="POST" action="{{ route('bookings.store', $event->id) }}">
                     @csrf
 
                     <input type="hidden" name="event_id" value="{{ $event->id }}">

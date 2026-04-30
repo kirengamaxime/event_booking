@@ -46,6 +46,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // ✅ REDIRECT TO EVENTS PAGE
+        return redirect()->route('events.index');
     }
 }
