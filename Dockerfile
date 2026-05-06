@@ -19,10 +19,8 @@ COPY . .
 # Install dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# ⚠️ IMPORTANT: only safe commands (NO database usage)
-RUN php artisan config:clear && \
-    php artisan config:cache && \
-    php artisan route:cache
+# Ensure folders exist
+RUN mkdir -p storage bootstrap/cache
 
 # Fix permissions
 RUN chmod -R 775 storage bootstrap/cache
@@ -30,5 +28,7 @@ RUN chmod -R 775 storage bootstrap/cache
 # Expose port
 EXPOSE 10000
 
-# Start server
-CMD php artisan serve --host=0.0.0.0 --port=10000
+# 🚀 Run Laravel safely at runtime
+CMD php artisan config:clear && \
+    php artisan config:cache && \
+    php artisan serve --host=0.0.0.0 --port=10000
