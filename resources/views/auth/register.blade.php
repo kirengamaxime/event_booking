@@ -51,7 +51,7 @@
 
     <h4 class="mb-4 text-center">Create Account</h4>
 
-    <form method="POST" action="{{ route('register') }}">
+   <form method="POST" action="{{ secure_url('/register') }}">
         @csrf
 
         <input type="text" name="name" class="form-control mb-3" placeholder="Full Name" required>
