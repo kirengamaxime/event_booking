@@ -1,170 +1,371 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $event->title }}</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
 
-body {
-    background: #0f172a;
-    color: white;
-    font-family: 'Segoe UI', sans-serif;
-}
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
 
-/* HERO */
-.hero {
-    position: relative;
-    height: 400px;
-    overflow: hidden;
-}
+        body{
+            font-family:'Segoe UI',sans-serif;
+            background:
+                linear-gradient(rgba(2,6,23,0.92), rgba(2,6,23,0.95)),
+                url('/images/bg.png');
 
-/* BACKGROUND IMAGE */
-.hero-bg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    filter: brightness(0.5);
-}
+            background-size:cover;
+            background-position:center;
+            background-attachment:fixed;
+            color:white;
+            min-height:100vh;
+        }
 
-/* DARK GRADIENT */
-.hero-bg::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(15,23,42,1), transparent);
-}
+        /* HERO */
+        .hero{
+            position:relative;
+            height:520px;
+            overflow:hidden;
+        }
 
-/* TEXT */
-.hero-content {
-    position: relative;
-    z-index: 2;
-    padding: 60px;
-}
+        .hero-image{
+            position:absolute;
+            inset:0;
+            background-size:cover;
+            background-position:center;
+            transform:scale(1.05);
+        }
 
-.hero h1 {
-    font-size: 42px;
-    font-weight: bold;
-}
+        .hero-overlay{
+            position:absolute;
+            inset:0;
+            background:
+                linear-gradient(to top, rgba(2,6,23,1), rgba(2,6,23,0.4)),
+                linear-gradient(to right, rgba(2,6,23,0.8), rgba(2,6,23,0.2));
+        }
 
-.hero p {
-    opacity: 0.85;
-    font-size: 16px;
-}
+        .hero-content{
+            position:relative;
+            z-index:2;
+            max-width:1200px;
+            margin:auto;
+            height:100%;
+            display:flex;
+            align-items:flex-end;
+            padding:60px 20px;
+        }
 
-/* MAIN CARD */
-.card-modern {
-    background: #1e293b;
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-}
+        .hero-box{
+            max-width:700px;
+        }
 
-/* INFO GRID */
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
+        .event-badge{
+            display:inline-block;
+            padding:10px 18px;
+            border-radius:50px;
+            background:rgba(59,130,246,0.15);
+            color:#60a5fa;
+            font-weight:600;
+            margin-bottom:20px;
+            border:1px solid rgba(96,165,250,0.2);
+        }
 
-.info-box {
-    background: #0f172a;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-}
+        .hero-title{
+            font-size:64px;
+            font-weight:900;
+            line-height:1.1;
+            margin-bottom:20px;
+        }
 
-.info-box small {
-    color: #94a3b8;
-}
+        .hero-meta{
+            display:flex;
+            gap:25px;
+            flex-wrap:wrap;
+            color:#cbd5e1;
+            font-size:17px;
+        }
 
-/* PROGRESS */
-.progress {
-    height: 12px;
-    border-radius: 10px;
-    overflow: hidden;
-}
+        /* MAIN */
+        .main-section{
+            max-width:1200px;
+            margin:auto;
+            padding:50px 20px 80px;
+        }
 
-.progress-bar {
-    background: linear-gradient(90deg, #22c55e, #4ade80);
-}
+        /* CARDS */
+        .glass-card{
+            background:rgba(15,23,42,0.82);
+            border:1px solid rgba(255,255,255,0.06);
+            backdrop-filter:blur(12px);
+            border-radius:28px;
+            padding:35px;
+            box-shadow:0 20px 60px rgba(0,0,0,0.4);
+            transition:0.3s ease;
+        }
 
-/* BOOKING CARD */
-.booking-card {
-    background: #111827;
-    border-radius: 20px;
-    padding: 25px;
-}
+        .glass-card:hover{
+            transform:translateY(-4px);
+            border-color:rgba(59,130,246,0.25);
+        }
 
-/* INPUTS */
-input {
-    background: #1e293b !important;
-    border: none !important;
-    color: white !important;
-}
+        .section-title{
+            font-size:32px;
+            font-weight:800;
+            margin-bottom:18px;
+        }
 
-input::placeholder {
-    color: #94a3b8;
-}
+        .section-text{
+            color:#cbd5e1;
+            line-height:1.8;
+            font-size:16px;
+        }
 
-/* TICKETS */
-.ticket {
-    padding: 15px;
-    border-radius: 12px;
-    background: #1e293b;
-    text-align: center;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: 0.3s;
-}
+        /* STATS */
+        .stats-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:20px;
+            margin-top:35px;
+        }
 
-.ticket:hover {
-    transform: translateY(-4px);
-}
+        .stat-box{
+            background:rgba(2,6,23,0.7);
+            border:1px solid rgba(255,255,255,0.05);
+            border-radius:22px;
+            padding:25px;
+            text-align:center;
+        }
 
-.ticket input {
-    display: none;
-}
+        .stat-number{
+            font-size:38px;
+            font-weight:800;
+            color:#60a5fa;
+            margin-bottom:5px;
+        }
 
-.ticket.active {
-    border: 2px solid #22c55e;
-    background: rgba(34,197,94,0.2);
-}
+        .stat-label{
+            color:#94a3b8;
+            font-size:15px;
+        }
 
-/* BUTTON */
-.btn-book {
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-    border: none;
-    padding: 14px;
-    border-radius: 12px;
-    font-weight: bold;
-    width: 100%;
-    transition: 0.3s;
-}
+        /* PROGRESS */
+        .progress-wrapper{
+            margin-top:35px;
+        }
 
-.btn-book:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(59,130,246,0.5);
-}
+        .progress{
+            height:14px;
+            border-radius:20px;
+            background:rgba(255,255,255,0.08);
+            overflow:hidden;
+        }
 
-/* ATTENDEES */
-.attendee {
-    background: #1e293b;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
+        .progress-bar{
+            background:linear-gradient(135deg,#3b82f6,#6366f1);
+            border-radius:20px;
+        }
+
+        /* BOOKING CARD */
+        .booking-card{
+            position:sticky;
+            top:30px;
+        }
+
+        .booking-title{
+            font-size:30px;
+            font-weight:800;
+            margin-bottom:10px;
+        }
+
+        .booking-subtitle{
+            color:#94a3b8;
+            margin-bottom:30px;
+        }
+
+        /* INPUTS */
+        .form-control{
+            height:60px;
+            background:rgba(2,6,23,0.75);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:16px;
+            color:white;
+            padding:15px 20px;
+            margin-bottom:18px;
+            font-size:15px;
+        }
+
+        .form-control:focus{
+            background:rgba(2,6,23,0.95);
+            color:white;
+            border-color:#3b82f6;
+            box-shadow:0 0 0 4px rgba(59,130,246,0.15);
+        }
+
+        .form-control::placeholder{
+            color:#64748b;
+        }
+
+        /* TICKET */
+        .ticket-options{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:15px;
+            margin-bottom:25px;
+        }
+
+        .ticket{
+            background:rgba(2,6,23,0.75);
+            border:2px solid transparent;
+            border-radius:20px;
+            padding:22px;
+            text-align:center;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .ticket:hover{
+            transform:translateY(-3px);
+            border-color:rgba(59,130,246,0.3);
+        }
+
+        .ticket.active{
+            border-color:#3b82f6;
+            background:rgba(59,130,246,0.12);
+        }
+
+        .ticket input{
+            display:none;
+        }
+
+        .ticket-name{
+            font-size:22px;
+            font-weight:700;
+            margin-bottom:8px;
+        }
+
+        .ticket-price{
+            color:#60a5fa;
+            font-size:18px;
+            font-weight:600;
+        }
+
+        /* BUTTON */
+        .btn-book{
+            width:100%;
+            height:62px;
+            border:none;
+            border-radius:18px;
+            background:linear-gradient(135deg,#2563eb,#6366f1);
+            color:white;
+            font-size:18px;
+            font-weight:700;
+            transition:0.3s ease;
+        }
+
+        .btn-book:hover{
+            transform:translateY(-3px);
+            box-shadow:0 20px 35px rgba(59,130,246,0.35);
+        }
+
+        /* ATTENDEES */
+        .attendees-grid{
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:15px;
+            margin-top:25px;
+        }
+
+        .attendee{
+            background:rgba(2,6,23,0.7);
+            border:1px solid rgba(255,255,255,0.05);
+            border-radius:16px;
+            padding:18px;
+            color:#e2e8f0;
+        }
+
+        /* ALERT */
+        .alert-warning{
+            background:rgba(234,179,8,0.12);
+            border:1px solid rgba(234,179,8,0.2);
+            color:#facc15;
+            border-radius:18px;
+            padding:18px;
+        }
+
+        /* BACK BUTTON */
+        .btn-back{
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            margin-top:35px;
+            padding:14px 24px;
+            border-radius:14px;
+            background:rgba(255,255,255,0.08);
+            color:white;
+            text-decoration:none;
+            font-weight:600;
+            transition:0.3s;
+        }
+
+        .btn-back:hover{
+            background:rgba(255,255,255,0.14);
+            color:white;
+            transform:translateX(-3px);
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:992px){
+
+            .hero-title{
+                font-size:46px;
+            }
+
+            .booking-card{
+                position:relative;
+                top:0;
+            }
+        }
+
+        @media(max-width:768px){
+
+            .hero{
+                height:420px;
+            }
+
+            .hero-title{
+                font-size:36px;
+            }
+
+            .stats-grid{
+                grid-template-columns:1fr;
+            }
+
+            .ticket-options{
+                grid-template-columns:1fr;
+            }
+
+            .attendees-grid{
+                grid-template-columns:1fr;
+            }
+
+            .glass-card{
+                padding:25px;
+                border-radius:22px;
+            }
+        }
 
     </style>
 </head>
 
 <body>
 
-<!-- HERO -->
 @php
     $title = strtolower($event->title);
 
@@ -181,18 +382,38 @@ input::placeholder {
     }
 @endphp
 
+<!-- HERO -->
 <div class="hero">
 
-    <div class="hero-bg" style="background-image: url('{{ $image }}');"></div>
+    <div class="hero-image" style="background-image:url('{{ $image }}')"></div>
+
+    <div class="hero-overlay"></div>
 
     <div class="hero-content">
-        <h1>{{ $event->title }}</h1>
-        <p>{{ $event->location }} • {{ $event->date }}</p>
+
+        <div class="hero-box">
+
+            <div class="event-badge">
+                Premium Event Experience
+            </div>
+
+            <h1 class="hero-title">
+                {{ $event->title }}
+            </h1>
+
+            <div class="hero-meta">
+                <span>📍 {{ $event->location }}</span>
+                <span>📅 {{ $event->date }}</span>
+            </div>
+
+        </div>
+
     </div>
 
 </div>
 
-<div class="container mt-5">
+<!-- MAIN -->
+<div class="main-section">
 
     @php
         $current = $event->bookings->count();
@@ -204,38 +425,55 @@ input::placeholder {
     <div class="row g-4">
 
         <!-- LEFT -->
-        <div class="col-md-8">
+        <div class="col-lg-8">
 
-            <div class="card-modern mb-4">
+            <!-- DESCRIPTION -->
+            <div class="glass-card mb-4">
 
-                <h4>Description</h4>
-                <p style="color:#cbd5f5">{{ $event->description }}</p>
+                <h2 class="section-title">
+                    About This Event
+                </h2>
 
-                <hr>
+                <p class="section-text">
+                    {{ $event->description }}
+                </p>
 
-                <div class="info-grid">
+                <!-- STATS -->
+                <div class="stats-grid">
 
-                    <div class="info-box">
-                        <h5>{{ $max }}</h5>
-                        <small>Max</small>
+                    <div class="stat-box">
+                        <div class="stat-number">{{ $max }}</div>
+                        <div class="stat-label">Maximum Seats</div>
                     </div>
 
-                    <div class="info-box">
-                        <h5>{{ $current }}</h5>
-                        <small>Booked</small>
+                    <div class="stat-box">
+                        <div class="stat-number">{{ $current }}</div>
+                        <div class="stat-label">Tickets Booked</div>
                     </div>
 
-                    <div class="info-box">
-                        <h5>{{ $remaining }}</h5>
-                        <small>Remaining</small>
+                    <div class="stat-box">
+                        <div class="stat-number">{{ $remaining }}</div>
+                        <div class="stat-label">Seats Remaining</div>
                     </div>
 
                 </div>
 
-                <div class="mt-4">
-                    <div class="progress">
-                        <div class="progress-bar" style="width: {{ $percentage }}%"></div>
+                <!-- PROGRESS -->
+                <div class="progress-wrapper">
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <small style="color:#94a3b8;">Booking Progress</small>
+                        <small style="color:#60a5fa;">
+                            {{ number_format($percentage) }}%
+                        </small>
                     </div>
+
+                    <div class="progress">
+                        <div class="progress-bar"
+                             style="width: {{ $percentage }}%">
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
@@ -243,62 +481,116 @@ input::placeholder {
             <!-- ATTENDEES -->
             @auth
             @if(auth()->user()->role === 'admin')
-            <div class="card-modern">
 
-                <h4>Attendees</h4>
+            <div class="glass-card">
 
-                @foreach($event->bookings as $a)
-                    <div class="attendee">
-                        {{ $a->name }}
-                    </div>
-                @endforeach
+                <h2 class="section-title">
+                    Event Attendees
+                </h2>
+
+                <div class="attendees-grid">
+
+                    @foreach($event->bookings as $a)
+
+                        <div class="attendee">
+                            👤 {{ $a->name }}
+                        </div>
+
+                    @endforeach
+
+                </div>
 
             </div>
+
             @endif
             @endauth
 
         </div>
 
         <!-- RIGHT -->
-        <div class="col-md-4">
+        <div class="col-lg-4">
 
-            <div class="booking-card">
+            <div class="glass-card booking-card">
 
-                <h4 class="mb-3">🎟 Book Ticket</h4>
+                <h2 class="booking-title">
+                    Book Your Ticket
+                </h2>
+
+                <p class="booking-subtitle">
+                    Secure your seat before tickets sell out.
+                </p>
 
                 @if($remaining > 0)
 
-              <form method="POST" action="{{ route('bookings.store', $event->id) }}">
+                <form method="POST"
+                      action="{{ route('bookings.store', $event->id) }}">
+
                     @csrf
 
-                    <input type="hidden" name="event_id" value="{{ $event->id }}">
+                    <input type="hidden"
+                           name="event_id"
+                           value="{{ $event->id }}">
 
-                    <input type="text" name="name" placeholder="Your Name" class="form-control mb-3" required>
+                    <input type="text"
+                           name="name"
+                           placeholder="Your Full Name"
+                           class="form-control"
+                           required>
 
-                    <input type="email" name="email" placeholder="Email Address" class="form-control mb-3" required>
+                    <input type="email"
+                           name="email"
+                           placeholder="Email Address"
+                           class="form-control"
+                           required>
 
-                    <div class="d-flex gap-2 mb-3">
+                    <!-- TICKET TYPES -->
+                    <div class="ticket-options">
 
-                        <label class="ticket w-100">
-                            <input type="radio" name="ticket_type" value="regular" required>
-                            Regular <br><small>5,000 RWF</small>
+                        <label class="ticket">
+                            <input type="radio"
+                                   name="ticket_type"
+                                   value="regular"
+                                   required>
+
+                            <div class="ticket-name">
+                                Regular
+                            </div>
+
+                            <div class="ticket-price">
+                                5,000 RWF
+                            </div>
+
                         </label>
 
-                        <label class="ticket w-100">
-                            <input type="radio" name="ticket_type" value="vip">
-                            VIP <br><small>15,000 RWF</small>
+                        <label class="ticket">
+                            <input type="radio"
+                                   name="ticket_type"
+                                   value="vip">
+
+                            <div class="ticket-name">
+                                VIP
+                            </div>
+
+                            <div class="ticket-price">
+                                15,000 RWF
+                            </div>
+
                         </label>
 
                     </div>
 
-                    <button class="btn-book">Book Now</button>
+                    <button class="btn-book">
+                        Book Now
+                    </button>
 
                 </form>
 
                 @else
+
                     <div class="alert alert-warning">
-                        Fully booked 🚫
+                        This event is fully booked 🚫
                     </div>
+
                 @endif
 
             </div>
@@ -308,19 +600,28 @@ input::placeholder {
     </div>
 
     <!-- BACK -->
-    <a href="{{ route('events.index') }}" class="btn btn-light mt-4">
-        ← Back
+    <a href="{{ route('events.index') }}"
+       class="btn-back">
+        ← Back to Events
     </a>
 
 </div>
 
 <script>
+
 document.querySelectorAll('.ticket').forEach(card => {
+
     card.addEventListener('click', () => {
-        document.querySelectorAll('.ticket').forEach(c => c.classList.remove('active'));
+
+        document.querySelectorAll('.ticket')
+            .forEach(c => c.classList.remove('active'));
+
         card.classList.add('active');
+
     });
+
 });
+
 </script>
 
 </body>

@@ -5,48 +5,316 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-body {
-    background: linear-gradient(135deg, #0f172a, #020617);
-    color: white;
-    font-family: 'Segoe UI', sans-serif;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.container {
-    max-width: 1000px;
+body{
+
+    background:
+        radial-gradient(circle at top left,#0f172a,#020617 60%);
+
+    min-height:100vh;
+
+    color:white;
+
+    font-family:'Poppins',sans-serif;
 }
 
-.card-booking {
-    background: #111827;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,0.05);
+/* CONTAINER */
+
+.container{
+
+    max-width:1200px;
 }
 
-.badge-paid {
-    background: rgba(34,197,94,0.2);
-    color: #22c55e;
-    padding: 5px 10px;
-    border-radius: 12px;
-    font-size: 12px;
+/* PAGE TITLE */
+
+.page-title{
+
+    font-size:48px;
+
+    font-weight:700;
+
+    letter-spacing:-2px;
+
+    margin-bottom:45px;
 }
 
-.badge-pending {
-    background: rgba(234,179,8,0.2);
-    color: #eab308;
-    padding: 5px 10px;
-    border-radius: 12px;
-    font-size: 12px;
+/* BOOKING CARD */
+
+.card-booking{
+
+    background:rgba(15,23,42,0.75);
+
+    border:1px solid rgba(255,255,255,0.05);
+
+    border-radius:28px;
+
+    padding:30px;
+
+    margin-bottom:28px;
+
+    backdrop-filter:blur(16px);
+
+    transition:0.4s ease;
+
+    overflow:hidden;
+
+    position:relative;
 }
 
-.btn-receipt {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    color: white;
-    border-radius: 8px;
-    padding: 6px 12px;
-    text-decoration: none;
+.card-booking:hover{
+
+    transform:translateY(-8px);
+
+    border-color:rgba(59,130,246,0.25);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.45),
+        0 0 25px rgba(59,130,246,0.12);
 }
+
+/* EVENT TITLE */
+
+.event-title{
+
+    font-size:30px;
+
+    font-weight:700;
+
+    margin-bottom:22px;
+
+    letter-spacing:-1px;
+}
+
+/* META */
+
+.event-meta{
+
+    color:#cbd5e1;
+
+    margin-bottom:12px;
+
+    font-size:16px;
+}
+
+/* TICKET */
+
+.ticket-type{
+
+    margin-top:18px;
+
+    color:#f8fafc;
+
+    font-size:17px;
+}
+
+.ticket-type strong{
+
+    color:#3b82f6;
+}
+
+/* STATUS SECTION */
+
+.status-row{
+
+    margin-top:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+}
+
+/* BADGES */
+
+.badge-paid{
+
+    background:rgba(34,197,94,0.12);
+
+    color:#22c55e;
+
+    padding:8px 18px;
+
+    border-radius:40px;
+
+    font-size:13px;
+
+    font-weight:600;
+}
+
+.badge-pending{
+
+    background:rgba(234,179,8,0.12);
+
+    color:#eab308;
+
+    padding:8px 18px;
+
+    border-radius:40px;
+
+    font-size:13px;
+
+    font-weight:600;
+}
+
+/* BUTTONS */
+
+.action-buttons{
+
+    margin-top:28px;
+
+    display:flex;
+
+    gap:14px;
+
+    flex-wrap:wrap;
+}
+
+.btn-modern{
+
+    padding:12px 22px;
+
+    border-radius:14px;
+
+    text-decoration:none;
+
+    color:white;
+
+    font-weight:600;
+
+    transition:0.3s ease;
+
+    border:none;
+}
+
+/* VIEW BUTTON */
+
+.btn-view{
+
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.btn-view:hover{
+
+    background:rgba(255,255,255,0.14);
+
+    color:white;
+
+    transform:translateY(-2px);
+}
+
+/* RECEIPT BUTTON */
+
+.btn-receipt{
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+}
+
+.btn-receipt:hover{
+
+    color:white;
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 30px rgba(59,130,246,0.35);
+}
+
+/* BACK BUTTON */
+
+.btn-back{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:30px;
+
+    padding:14px 26px;
+
+    border-radius:16px;
+
+    text-decoration:none;
+
+    color:white;
+
+    font-weight:600;
+
+    background:rgba(255,255,255,0.06);
+
+    border:1px solid rgba(255,255,255,0.05);
+
+    transition:0.3s ease;
+}
+
+.btn-back:hover{
+
+    background:rgba(255,255,255,0.1);
+
+    color:white;
+
+    transform:translateX(-3px);
+}
+
+/* EMPTY STATE */
+
+.empty-state{
+
+    margin-top:120px;
+
+    text-align:center;
+
+    opacity:0.7;
+}
+
+.empty-state h3{
+
+    font-size:32px;
+
+    font-weight:600;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+    .page-title{
+
+        font-size:34px;
+    }
+
+    .card-booking{
+
+        padding:22px;
+    }
+
+    .event-title{
+
+        font-size:24px;
+    }
+}
+
     </style>
 </head>
 
@@ -54,7 +322,13 @@ body {
 
 <div class="container py-5">
 
-    <h2 class="mb-4">🎟 My Bookings</h2>
+    <!-- TITLE -->
+
+    <div class="page-title">
+        My Bookings
+    </div>
+
+    <!-- BOOKINGS -->
 
     @if($bookings->count())
 
@@ -62,34 +336,71 @@ body {
 
             <div class="card-booking">
 
-                <h5>{{ $booking->event->title }}</h5>
+                <!-- EVENT TITLE -->
 
-                <p class="mb-1">📅 {{ $booking->event->date }}</p>
-                <p class="mb-1">📍 {{ $booking->event->location }}</p>
+                <div class="event-title">
+                    {{ $booking->event->title }}
+                </div>
 
-                <p class="mb-2">
-                    🎫 Ticket: <strong>{{ strtoupper($booking->ticket_type) }}</strong>
-                </p>
+                <!-- DETAILS -->
 
-                <p>
-                    Status:
+                <div class="event-meta">
+                    📅 {{ $booking->event->date }}
+                </div>
+
+                <div class="event-meta">
+                    📍 {{ $booking->event->location }}
+                </div>
+
+                <!-- TICKET -->
+
+                <div class="ticket-type">
+                    🎫 Ticket:
+                    <strong>
+                        {{ strtoupper($booking->ticket_type) }}
+                    </strong>
+                </div>
+
+                <!-- STATUS -->
+
+                <div class="status-row">
+
+                    <span>Status:</span>
+
                     @if($booking->payment_status == 'paid')
-                        <span class="badge-paid">Paid</span>
+
+                        <span class="badge-paid">
+                            Paid
+                        </span>
+
                     @else
-                        <span class="badge-pending">Pending</span>
+
+                        <span class="badge-pending">
+                            Pending
+                        </span>
+
                     @endif
-                </p>
 
-                <div class="d-flex gap-2">
+                </div>
 
-                    <a href="{{ route('events.show', $booking->event->id) }}" class="btn btn-sm btn-light">
+                <!-- BUTTONS -->
+
+                <div class="action-buttons">
+
+                    <a href="{{ route('events.show', $booking->event->id) }}"
+                       class="btn-modern btn-view">
+
                         View Event
                     </a>
 
                     @if($booking->payment_status == 'paid')
-                        <a href="{{ route('receipt.download', $booking->id) }}" class="btn-receipt">
+
+                        <a href="{{ route('receipt.download', $booking->id) }}"
+                           class="btn-modern btn-receipt">
+
                             Download Receipt
                         </a>
+
                     @endif
 
                 </div>
@@ -100,14 +411,25 @@ body {
 
     @else
 
-        <div class="text-center mt-5">
-            <h5>No bookings yet 😢</h5>
+        <div class="empty-state">
+
+            <h3>No bookings yet</h3>
+
+            <p class="text-secondary mt-3">
+                Explore events and start booking amazing experiences.
+            </p>
+
         </div>
 
     @endif
 
-    <a href="{{ route('events.index') }}" class="btn btn-secondary mt-3">
+    <!-- BACK -->
+
+    <a href="{{ route('events.index') }}"
+       class="btn-back">
+
         ← Back to Events
+
     </a>
 
 </div>
