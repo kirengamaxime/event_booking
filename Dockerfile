@@ -28,7 +28,7 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # Permissions
 RUN mkdir -p storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache
-
+RUN php artisan storage:link
 # Expose Render port
 EXPOSE 10000
 
