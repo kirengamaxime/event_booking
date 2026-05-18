@@ -619,9 +619,14 @@ body{
 
                     <div class="event-image">
 
-                 <img src="{{ asset('images/' . $event->image) }}"
+                <img src="{{ $event->image 
+    ? asset('storage/' . $event->image) 
+    : asset('images/default.png') }}"
+     
      class="card-img-top"
+     
      style="height:250px; object-fit:cover;"
+     
      onerror="this.src='{{ asset('images/default.png') }}'">
 
                         <div class="overlay">
