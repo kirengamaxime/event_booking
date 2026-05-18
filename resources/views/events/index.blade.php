@@ -619,7 +619,7 @@ body{
 
                     <div class="event-image">
 
-                  <img src="{{ asset('storage/' . $event->image) }}"
+                 <img src="{{ asset('images/' . $event->image) }}"
      class="card-img-top"
      style="height:250px; object-fit:cover;"
      onerror="this.src='{{ asset('images/default.png') }}'">
