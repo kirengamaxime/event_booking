@@ -619,7 +619,9 @@ body{
 
                     <div class="event-image">
 
-                        <img src="{{ $image }}">
+                       <img src="{{ asset('images/' . $event->image) }}"
+     class="card-img-top"
+     style="height:250px; object-fit:cover;">
 
                         <div class="overlay">
 
