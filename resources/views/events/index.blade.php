@@ -619,15 +619,7 @@ body{
 
                     <div class="event-image">
 
-                <img src="{{ $event->image 
-    ? asset('storage/' . $event->image) 
-    : asset('images/default.png') }}"
-     
-     class="card-img-top"
-     
-     style="height:250px; object-fit:cover;"
-     
-     onerror="this.src='{{ asset('images/default.png') }}'">
+                        <img src="{{ $image }}">
 
                         <div class="overlay">
 

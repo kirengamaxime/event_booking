@@ -18,7 +18,7 @@ class EventController extends Controller
         return view('events.create');
     }
 
-  public function store(Request $request)
+   public function store(Request $request)
 {
     $request->validate([
         'title' => 'required',
@@ -27,29 +27,20 @@ class EventController extends Controller
         'location' => 'required',
         'max_attendees' => 'required|integer',
         'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+       
     ]);
 
     $data = $request->all();
 
-    // ✅ SAVE IMAGE TO public/images
+    // ✅ HANDLE IMAGE UPLOAD
     if ($request->hasFile('image')) {
-
-        $image = $request->file('image');
-
-        // unique filename
-        $imageName = time() . '_' . $image->getClientOriginalName();
-
-        // move image
-        $image->move(public_path('images'), $imageName);
-
-        // save filename in database
-        $data['image'] = $imageName;
+        $imagePath = $request->file('image')->store('events', 'public');
+        $data['image'] = $imagePath;
     }
 
     Event::create($data);
 
-    return redirect()->route('events.index')
-        ->with('success', 'Event created!');
+    return redirect()->route('events.index')->with('success', 'Event created!');
 }
 
     public function show(Event $event)
@@ -77,25 +68,14 @@ class EventController extends Controller
 
     $data = $request->all();
 
-    // ✅ SAVE IMAGE TO public/images
     if ($request->hasFile('image')) {
-
-        $image = $request->file('image');
-
-        // unique filename
-        $imageName = time() . '_' . $image->getClientOriginalName();
-
-        // move image
-        $image->move(public_path('images'), $imageName);
-
-        // save filename in database
-        $data['image'] = $imageName;
+        $imagePath = $request->file('image')->store('events', 'public');
+        $data['image'] = $imagePath;
     }
 
     $event->update($data);
 
-    return redirect()->route('events.index')
-        ->with('success', 'Event updated!');
+    return redirect()->route('events.index')->with('success', 'Event updated!');
 }
 
     // ✅ DELETE
